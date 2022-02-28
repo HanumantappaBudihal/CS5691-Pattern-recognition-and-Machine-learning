@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import utilities.common as common
+import utilities.Common as common
 import utilities.PCA as pca
 
 if __name__ == '__main__':

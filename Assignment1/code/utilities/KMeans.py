@@ -1,34 +1,21 @@
 import numpy as np
-import random
 import matplotlib.pyplot as plt
 import copy
 import os
-
 
 class KMeans:
     def __init__(self, n_cluster=3, random_state=721):
         self.n_cluster = n_cluster
         self.random_state = random_state
 
-    def fit(self, dataset,initial_centroids=None):
+    def fit(self, dataset,initial_centroids):
         self.X = dataset.iloc[:, [0, 1]]  # not use feature labels
         self.m = self.X.shape[0]  # number of training examples
-        self.n = self.X.shape[1]  # number of features.
-
-        if  isinstance(initial_centroids, type(None)) :
-            initial_centroids = self.initialize_centroids()
+        self.n = self.X.shape[1]  # number of features.    
+        initial_centroids = initial_centroids
         
         self.plot_initial_centroids(initial_centroids)
         self.clustering(initial_centroids)
-
-    def initialize_centroids(self):
-        initial_centroids = []
-        random.seed(self.random_state)
-
-        for i in range(self.n_cluster):
-            initial_centroids.append(np.ravel(self.X.iloc[(random.randint(0, self.m - 1)), :]))
-
-        return np.array(initial_centroids)
 
     def plot_initial_centroids(self, initial_centroids):
 
@@ -71,7 +58,6 @@ class KMeans:
             self.iterating_count += 1
 
         self.plot_objective_function_values()
-
         self.plot_centroids(centroids, clusters)
         #plt.savefig('plots\Q2\A.png', dpi=300)
 
@@ -129,9 +115,8 @@ class KMeans:
         for i in plt.get_fignums():
             plt.figure(i)
             plt.savefig(os.path.join(path, "{}_K{}_{}.png".format(question_number,k,i)), format='png')
-        # close all figure to clear figure numbers
+        # close all figure to clear figure numbers        
         plt.close("all")
-        
-        print("Figures for the dataset saved in {}".format(path))
+        plt.clf()
 
    
