@@ -3,19 +3,19 @@ import numpy as np
 import math
 
 
-def process(data):
+def fit(data):
     """
     Find out the variance matrix for the given data
 
-        Parameters
-        ----------
-        data : 
-              matrix data 
-        Returns
-        -------        
+    Parameters
+    ----------
+    data :  matrix data 
+        
+    Returns
+    -------        
     eigen_values and eigen_vectors
 
-        """
+    """
     covariance = data.T @ data  # Matric multlication
     eigen_values, eigen_vectors = np.linalg.eigh(covariance)
 

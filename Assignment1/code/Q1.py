@@ -1,7 +1,3 @@
-import numpy as np
-import math
-import pandas as pd
-import scipy.linalg as la
 import matplotlib.pyplot as plt
 import utilities.common as common
 import utilities.PCA as pca
@@ -19,7 +15,7 @@ if __name__ == '__main__':
         axis=0)          # variance along x and y
 
     # Apply  PCA
-    eigen_values, eigen_vectors = pca.process(centered_data)
+    eigen_values, eigen_vectors = pca.fit(centered_data)
 
     # project data point in eigen space
     centered_projected_data = original_data @ eigen_vectors
@@ -41,7 +37,7 @@ if __name__ == '__main__':
     # variance along x and y
     # without centring the data
     data_variance = original_data.var(axis=0)
-    eigen_values2, eigen_vectors2 = pca.process(original_data)  # PCA
+    eigen_values2, eigen_vectors2 = pca.fit(original_data)  # PCA
     # project data point in eigen space
     projected_data = original_data @ eigen_vectors
     # variance in data in eigen space
@@ -62,7 +58,7 @@ if __name__ == '__main__':
     plt.savefig('plots\Q1\cA.png', dpi=300)
 
 # #################################### Questsion 1 -> (iii) Part ###############################
-    """ part c """
+
     print("---------------------------- Q1 - part (iii) Output------------------------\n")
 
     for i in range(2, 4):
