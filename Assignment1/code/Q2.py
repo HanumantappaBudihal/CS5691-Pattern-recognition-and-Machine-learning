@@ -1,5 +1,5 @@
 import pandas as pd
-import copy
+import numpy as np
 
 from utilities.KMeans import KMeans
 import utilities.Common as common
@@ -49,18 +49,13 @@ if __name__ == '__main__':
 # ############################ Questsion 2 -> (iii) Part #######################################
     print("---------------------------- Q2 - part (iii) Output------------------------")
     
-    import numpy as np
     file = open("dataset/Dataset.csv")
-    mat3 = np.loadtxt(file, delimiter=",")
-
-    mat3=np.transpose(mat3)
-    import utilities.SpectralClustering as  sc
-
-    affinity1 = sc.compute_affinity(mat3.T)
-
+    data = np.loadtxt(file, delimiter=",")
+    data = np.transpose(data)
+    
+    affinity1 = sc.compute_affinity(data.T)
     k1 = sc.spectral_clustering(affinity1, 4)
-    sc.plot_clusters(mat3, k1, 4, "Spectral on mat3, k=4")
-
+    sc.plot_clusters(data, k1, 4, "plots/Q2","Spectral on mat3, k=4")
 
 # ############################ Questsion 2 -> (iv) Part #######################################
     print("---------------------------- Q2 - part (iv) Output------------------------")

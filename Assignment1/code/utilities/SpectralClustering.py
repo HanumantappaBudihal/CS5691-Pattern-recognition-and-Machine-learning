@@ -1,17 +1,20 @@
+import os
 import scipy.io
 import matplotlib.pyplot as plt
 import numpy as np
-import math
+import scipy.sparse.linalg
 import scipy
 import pandas as pd
 import copy
 import numpy
 
 plt.style.use('ggplot')
-np.random.seed(1)
+np.random.seed(42)
 
 def dist(a, b, ax=1):
-    """ Euclidean distance """
+    """ 
+        Euclidean distance 
+    """
     return np.linalg.norm(a-b, axis=ax)
 
 def kmeans(X, k):
@@ -30,13 +33,10 @@ def kmeans(X, k):
             distances = dist((X[0][i], X[1][i]), C)
             if numpy.isnan(distances).any() and flag:
                 flag = False
-                print(distances)
-                print("Coords: ")
-                print(X[0][i], X[1][i])
-                print("C: ")
-                print(C)
+
             cluster = np.argmin(distances)
             clusters[i] = cluster
+
         C_old = copy.deepcopy(C)
         for i in range(k):
             points = np.array([(X[0][j], X[1][j]) for j in range(X.shape[1]) if clusters[j] == i])
@@ -47,11 +47,10 @@ def kmeans(X, k):
         error = dist(C, C_old, None)
     
     return clusters
+
 def similarity(a, b):
     return np.exp(-(abs(a-b)**2) / 10)
 
-
-import scipy.sparse.linalg
 def spectral_clustering(affinity, k):
     def laplacian(A):
         D = np.zeros(A.shape)
@@ -89,7 +88,7 @@ def compute_affinity(X):
             res[i][j] = squared_exponential(X[i], X[j], sig[i], sig[j])
     return res
 
-def plot_clusters(X, clusters, k, title="Title here"):
+def plot_clusters(X, clusters, k,path, title="Title here"):
     symbols = ['x', 'o', '^', '.', '1', '2', '3', '4']
     fig, ax = plt.subplots()
     for i in range(k):
@@ -97,4 +96,4 @@ def plot_clusters(X, clusters, k, title="Title here"):
         if len(points) != 0:
             ax.scatter(points[:, 0], points[:, 1], s=40, marker=symbols[i])
     plt.title(title)
-    plt.savefig("test.png", dpi=500)
+    plt.savefig(os.path.join(path, "Q2c_1.png"))
