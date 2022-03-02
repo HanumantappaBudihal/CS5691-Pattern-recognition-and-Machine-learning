@@ -1,64 +1,72 @@
 
-from ipaddress import ip_address
-from sklearn.neighbors import kneighbors_graph
-from scipy import sparse
+from matplotlib import pyplot as plt
+from itertools import cycle, islice
 import numpy as np
-from numpy import linalg
-import pandas as pd
 
-from sklearn.cluster import KMeans
-## TODO : Need to implement the code 
-def generate_graph_laplacian(df, nn):
-    """Generate graph Laplacian from data."""
-    # Adjacency Matrix.
-    connectivity = kneighbors_graph(X=df, n_neighbors=nn, mode='connectivity')
-    adjacency_matrix_s = (1/2)*(connectivity + connectivity.T)
-    # Graph Laplacian.
-    graph_laplacian_s = sparse.csgraph.laplacian(csgraph=adjacency_matrix_s, normed=False)
-    graph_laplacian = graph_laplacian_s.toarray()
-    return graph_laplacian 
+def myKNN(S, k, sigma=1.0):
+    N = len(S)
+    A = np.zeros((N,N))
 
-# We project onto the real numbers. 
-def compute_spectrum_graph_laplacian(graph_laplacian):
-    """Compute eigenvalues and eigenvectors and project 
-    them onto the real numbers.
-    """
-    eigenvals, eigenvcts = linalg.eig(graph_laplacian)
-    eigenvals = np.real(eigenvals)
-    eigenvcts = np.real(eigenvcts)
-    return eigenvals, eigenvcts
+    for i in range(N):
+        dist_with_index = zip(S[i], range(N))
+        dist_with_index = sorted(dist_with_index, key=lambda x:x[0])
+        neighbours_id = [dist_with_index[m][1] for m in range(k+1)] # xi's k nearest neighbours
 
-def project_and_transpose(eigenvals, eigenvcts, num_ev):
-    """Select the eigenvectors corresponding to the first 
-    (sorted) num_ev eigenvalues as columns in a data frame.
-    """
-    eigenvals_sorted_indices = np.argsort(eigenvals)
-    indices = eigenvals_sorted_indices[: num_ev]
+        for j in neighbours_id: # xj is xi's neighbour
+            A[i][j] = np.exp(-S[i][j]/2/sigma/sigma)
+            A[j][i] = A[i][j] # mutually
 
-    proj_df = pd.DataFrame(eigenvcts[:, indices.squeeze()])
-    proj_df.columns = ['v_' + str(c) for c in proj_df.columns]
-    return proj_df
+    return A
 
-def spectral_clustering(df, n_neighbors, n_clusters):
-    """Spectral Clustering Algorithm."""
-    graph_laplacian = generate_graph_laplacian(df, n_neighbors)
-    eigenvals, eigenvcts = compute_spectrum_graph_laplacian(graph_laplacian)
-    proj_df = project_and_transpose(eigenvals, eigenvcts, n_clusters)
-    cluster = run_k_means(proj_df, proj_df.columns.size)
-    return ['c_' + str(c) for c in cluster]
+def calLaplacianMatrix(adjacentMatrix):
 
+    # compute the Degree Matrix: D=sum(A)
+    degreeMatrix = np.sum(adjacentMatrix, axis=1)
 
-def run_k_means(df, n_clusters):
-    """K-means clustering."""
-    k_means = KMeans(random_state=25, n_clusters=n_clusters) # Need to remove with out functions
-    k_means.fit(df)
-    cluster = k_means.predict(df)
-    return cluster
+    # print degreeMatrix
 
-from itertools import chain
-def data_frame_from_coordinates(coordinates): 
-    """From coordinates to data frame."""
-    xs = chain(*[c[0] for c in coordinates])
-    ys = chain(*[c[1] for c in coordinates])
+    # compute the Laplacian Matrix: L=D-A
+    laplacianMatrix = np.diag(degreeMatrix) - adjacentMatrix
 
-    return pd.DataFrame(data={'x': xs, 'y': ys})
+    # print laplacianMatrix
+
+    # normailze
+    # D^(-1/2) L D^(-1/2)
+    sqrtDegreeMatrix = np.diag(1.0 / (degreeMatrix ** (0.5)))
+    return np.dot(np.dot(sqrtDegreeMatrix, laplacianMatrix), sqrtDegreeMatrix)
+
+def plot(X, y_sp, y_km):
+    colors = np.array(list(islice(cycle(['#377eb8', '#ff7f00', '#4daf4a',
+                                                '#f781bf', '#a65628', '#984ea3',
+                                                '#999999', '#e41a1c', '#dede00']),
+                                        int(max(y_km) + 1))))
+    plt.subplot(121)
+    plt.scatter(X[:,0], X[:,1], s=10, color=colors[y_sp])
+    plt.title("Spectral Clustering")
+    plt.xlabel("Feature 1")
+    plt.ylabel("Feature 2")
+
+    plt.subplot(122)
+    plt.scatter(X[:,0], X[:,1], s=10, color=colors[y_km])
+    plt.title("Kmeans Clustering")
+    plt.xlabel("Feature 1")
+    plt.ylabel("Feature 2")
+    
+    plt.savefig("plots/Q2/Q2c_k4.png")
+
+def euclidDistance(x1, x2, sqrt_flag=False):
+    res = np.sum((x1-x2)**2)
+    if sqrt_flag:
+        res = np.sqrt(res)
+    return res
+
+def calEuclidDistanceMatrix(X):
+    X = np.array(X)
+    S = np.zeros((len(X), len(X)))
+    for i in range(len(X)):
+        for j in range(i+1, len(X)):
+            S[i][j] = 1.0 * euclidDistance(X[i], X[j])
+            S[j][i] = S[i][j]
+    return S
+
+            

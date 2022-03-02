@@ -1,3 +1,4 @@
+import imp
 import pandas as pd
 import copy
 
@@ -16,44 +17,58 @@ if __name__ == '__main__':
     # load datasets from files
     dataset = pd.read_csv(dataset_file, sep=',', header=None)
 
-    # k = 4 and 5-different random initilization centroids
-    number_of_cluster = 4
-    kmeans1 = KMeans(n_cluster=number_of_cluster)
+    # # k = 4 and 5-different random initilization centroids
+    # number_of_cluster = 4
+    # kmeans1 = KMeans(n_cluster=number_of_cluster)
 
-    for i in range(1, 6):
-        # Get the random centroid points everytime
-        initial_centroids = common.random(dataset, number_of_cluster)
-        clone = copy.deepcopy(dataset)
+    # for i in range(1, 6):
+    #     # Get the random centroid points everytime
+    #     initial_centroids = common.random(dataset, number_of_cluster)
+    #     clone = copy.deepcopy(dataset)
 
-        kmeans1.fit(dataset,initial_centroids)
-        kmeans1.save_figures('plots/Q2', number_of_cluster, 'Q2a{}'.format(i))
+    #     kmeans1.fit(dataset,initial_centroids)
+    #     kmeans1.save_figures('plots/Q2', number_of_cluster, 'Q2a{}'.format(i))
 
 # ############################ Questsion 2 -> (ii) Part #######################################
 
     print("---------------------------- Q2 - part (ii) Output------------------------")
     
-    #fixed initialization and K = {2,3,4,5}
+    # #fixed initialization and K = {2,3,4,5}
 
-    #initialization centroid for cluster
-    initial_centroids = ce.random(dataset, 2)
+    # #initialization centroid for cluster
+    # initial_centroids = ce.random(dataset, 2)
 
-    for i in range(2, 6):
+    # for i in range(2, 6):
 
-        kmeans1 = KMeans(n_cluster=i)
-        clone = copy.deepcopy(dataset)
-        initial_centroids = common.add(clone, i)
+    #     kmeans1 = KMeans(n_cluster=i)
+    #     clone = copy.deepcopy(dataset)
+    #     initial_centroids = common.add(clone, i)
 
-        kmeans1.fit(dataset,initial_centroids)
-        kmeans1.save_figures('plots/Q2', 4, 'Q2b{}'.format(i))
+    #     kmeans1.fit(dataset,initial_centroids)
+    #     kmeans1.save_figures('plots/Q2', 4, 'Q2b{}'.format(i))
 
 # ############################ Questsion 2 -> (iii) Part #######################################
     print("---------------------------- Q2 - part (iii) Output------------------------")
-    # data_df =dataset
-    # data_df['cluster'] = sc.spectral_clustering(df=data_df, n_neighbors=8, n_clusters=3)
 
-    # fig, ax = plt.subplots()
-    # sns.scatterplot(x='x', y='y', data=data_df, hue='cluster', ax=ax)
-    # ax.set(title='Spectral Clustering')
+    import numpy as np
+    import pandas as pd
+    np.random.seed(25)
+    
+    from sklearn.cluster import KMeans
+    Similarity = sc.calEuclidDistanceMatrix(dataset)
+    Adjacent = sc.myKNN(Similarity, k=4)
+    Laplacian = sc.calLaplacianMatrix(Adjacent)
+
+    x, V = np.linalg.eig(Laplacian)
+    x = zip(x, range(len(x)))
+    x = sorted(x, key=lambda x:x[0])
+    H = np.vstack([V[:,i] for (v, i) in x[:1]]).T
+    
+    H=np.array(H).real()
+    sp_kmeans = KMeans(n_clusters=4).fit(H)
+    pure_kmeans = KMeans(n_clusters=4).fit(dataset)
+
+    sc.plot(dataset, sp_kmeans.labels_, pure_kmeans.labels_)
 
 # ############################ Questsion 2 -> (iv) Part #######################################
     print("---------------------------- Q2 - part (iv) Output------------------------")
