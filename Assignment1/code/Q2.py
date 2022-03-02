@@ -1,4 +1,3 @@
-from sys import implementation
 import pandas as pd
 import copy
 
@@ -29,7 +28,7 @@ if __name__ == '__main__':
         kmeans1.fit(dataset,initial_centroids)
         kmeans1.save_figures('plots/Q2', number_of_cluster, 'Q2a{}'.format(i))
 
-# ############################ Questsion 2 -> (i) Part #######################################
+# ############################ Questsion 2 -> (ii) Part #######################################
 
     print("---------------------------- Q2 - part (ii) Output------------------------")
     
@@ -47,13 +46,23 @@ if __name__ == '__main__':
         kmeans1.fit(dataset,initial_centroids)
         kmeans1.save_figures('plots/Q2', 4, 'Q2b{}'.format(i))
 
-    # print("---------------------------- Processing completed ------------------------")
-
-
+# ############################ Questsion 2 -> (iii) Part #######################################
+    print("---------------------------- Q2 - part (iii) Output------------------------")
     # data_df =dataset
     # data_df['cluster'] = sc.spectral_clustering(df=data_df, n_neighbors=8, n_clusters=3)
 
     # fig, ax = plt.subplots()
     # sns.scatterplot(x='x', y='y', data=data_df, hue='cluster', ax=ax)
     # ax.set(title='Spectral Clustering')
+
+# ############################ Questsion 2 -> (iv) Part #######################################
+    print("---------------------------- Q2 - part (iv) Output------------------------")
+    # data_df =dataset
+    # data_df['cluster'] = sc.spectral_clustering(df=data_df, n_neighbors=8, n_clusters=3)
+
+    # fig, ax = plt.subplots()
+    # sns.scatterplot(x='x', y='y', data=data_df, hue='cluster', ax=ax)
+    # ax.set(title='Spectral Clustering')
+
+    print("---------------------------- Processing completed ------------------------")
    

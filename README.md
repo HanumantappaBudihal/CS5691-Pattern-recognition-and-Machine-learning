@@ -1,12 +1,5 @@
-# CS5691-Pattern-recognition-and-Machine-learning
+## CS5691 -Assignment-1
 
+### Contributors: Hanumantappa Budihal (CS21M022)
 
-https://www.analyticsvidhya.com/blog/2021/05/k-mean-getting-the-optimal-number-of-clusters/
-
-#Centroid values : 
-array([-4.579 , -4.3675])
-array([-2.6667 ,  0.92364])
-array([ 0.95799, -3.0347 ])
-
-Imporant article to read
-Same as our data : https://www.kdnuggets.com/2020/05/getting-started-spectral-clustering.html
+This is the first assignment of CS5691 in which we attempt to solve problem statement based on PCA and K-Means cluster.
