@@ -55,7 +55,7 @@ if __name__ == '__main__':
     
     affinity1 = sc.compute_affinity(data.T)
     k1 = sc.spectral_clustering(affinity1, 4)
-    sc.plot_clusters(data, k1, 4, "plots/Q2","Spectral on mat3, k=4")
+    sc.plot_clusters(data, k1, 4, "plots/Q2","Spectral on dataset, k=4")
 
 # ############################ Questsion 2 -> (iv) Part #######################################
     print("---------------------------- Q2 - part (iv) Output------------------------")

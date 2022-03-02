@@ -96,4 +96,6 @@ def plot_clusters(X, clusters, k,path, title="Title here"):
         if len(points) != 0:
             ax.scatter(points[:, 0], points[:, 1], s=40, marker=symbols[i])
     plt.title(title)
+    plt.xlabel("Feature1")
+    plt.ylabel("Feature2")
     plt.savefig(os.path.join(path, "Q2c_1.png"))
