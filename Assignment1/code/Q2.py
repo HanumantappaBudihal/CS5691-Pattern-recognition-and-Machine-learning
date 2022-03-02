@@ -1,4 +1,3 @@
-import imp
 import pandas as pd
 import copy
 
@@ -49,26 +48,19 @@ if __name__ == '__main__':
 
 # ############################ Questsion 2 -> (iii) Part #######################################
     print("---------------------------- Q2 - part (iii) Output------------------------")
-
+    
     import numpy as np
-    import pandas as pd
-    np.random.seed(25)
-    
-    from sklearn.cluster import KMeans
-    Similarity = sc.calEuclidDistanceMatrix(dataset)
-    Adjacent = sc.myKNN(Similarity, k=4)
-    Laplacian = sc.calLaplacianMatrix(Adjacent)
+    file = open("dataset/Dataset.csv")
+    mat3 = np.loadtxt(file, delimiter=",")
 
-    x, V = np.linalg.eig(Laplacian)
-    x = zip(x, range(len(x)))
-    x = sorted(x, key=lambda x:x[0])
-    H = np.vstack([V[:,i] for (v, i) in x[:1]]).T
-    
-    H=np.array(H).real()
-    sp_kmeans = KMeans(n_clusters=4).fit(H)
-    pure_kmeans = KMeans(n_clusters=4).fit(dataset)
+    mat3=np.transpose(mat3)
+    import utilities.SpectralClustering as  sc
 
-    sc.plot(dataset, sp_kmeans.labels_, pure_kmeans.labels_)
+    affinity1 = sc.compute_affinity(mat3.T)
+
+    k1 = sc.spectral_clustering(affinity1, 4)
+    sc.plot_clusters(mat3, k1, 4, "Spectral on mat3, k=4")
+
 
 # ############################ Questsion 2 -> (iv) Part #######################################
     print("---------------------------- Q2 - part (iv) Output------------------------")
