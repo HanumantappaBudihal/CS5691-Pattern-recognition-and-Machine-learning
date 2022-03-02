@@ -62,15 +62,13 @@ def kernalPCA(data, function_pointer, d_value, no_ocmponents):
  
 def polynominal_function(x, y, v):
     """
-    Implementation for this (1 + x^Ty)^d for d = {2,3} function
-
-        """
+        Implementation for this (1 + x^Ty)^d for d = {2,3} function
+    """
     return (1 + x @ y.T)**v
 
 
 def gauusian_function(x, y, p):
     """
-    Implementation for this e^(-(x-y)(x-y)^T / 2*(sigam)^2) for d = {2,3} function
-
-        """
+        Implementation for this e^(-(x-y)(x-y)^T / 2*(sigam)^2) for d = {2,3} function
+    """
     return np.matrix(math.exp(((y-x) @ (x-y).T)/(2*p*p)))

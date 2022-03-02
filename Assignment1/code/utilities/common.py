@@ -90,3 +90,56 @@ def plot_data(original_data, projected_data, eigenvalues, colour):
     plt.xlabel("x-axis/no of eigen values")
     plt.ylabel("y-axis/eigen vlaues")
     plt.plot([i for i in range(1, len(eigenvalues)+1)], eigenvalues, colour)
+
+
+def random(dataset, k):
+    """
+    Create random cluster centroids.
+
+    Parameters
+    ----------
+    dataset : numpy array
+        The dataset to be used for centroid initialization.
+    k : int
+        The desired number of clusters for which centroids are required.
+    Returns
+    -------
+    centroids : numpy array
+        Collection of k centroids as a numpy array.
+    """
+
+    centroids = []
+    m = np.shape(dataset)[0]
+
+    for _ in range(k):
+        random_number = np.random.randint(0, m-1)
+        centroids.append(np.ravel(dataset.iloc[random_number, :]))
+
+    return np.array(centroids)
+
+
+def add(dataset, k, random_state=42):
+    """
+    Create random cluster centroids.
+
+    Parameters
+    ----------
+    dataset : numpy array
+        The dataset to be used for centroid initialization.
+    k : int
+        The desired number of clusters for which centroids are required.
+    Returns
+    -------
+    centroids : numpy array
+        Collection of k centroids as a numpy array.
+    """
+    np.random.seed(random_state)
+    m = np.shape(dataset)[0]
+
+    centroids = []
+
+    for _ in range(k):
+        random_number = np.random.randint(0, m-1)
+        centroids.append(np.ravel(dataset.iloc[random_number, :]))
+
+    return np.array(centroids)

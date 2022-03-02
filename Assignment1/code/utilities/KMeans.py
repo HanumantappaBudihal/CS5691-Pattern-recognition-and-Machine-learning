@@ -9,6 +9,17 @@ class KMeans:
         self.random_state = random_state
 
     def fit(self, dataset,initial_centroids):
+        """
+        Apply the cluster operation on given dataset
+
+        Parameters
+        ----------
+        dataset :  Initial dataset 
+        initial_centroids : randomized initial centroids
+        Returns
+        -------        
+        NA
+        """
         self.X = dataset.iloc[:, [0, 1]]  # not use feature labels
         self.m = self.X.shape[0]  # number of training examples
         self.n = self.X.shape[1]  # number of features.    
@@ -18,7 +29,16 @@ class KMeans:
         self.clustering(initial_centroids)
 
     def plot_initial_centroids(self, initial_centroids):
+        """
+        create the graph for initial centroids
 
+        Parameters
+        ----------
+        initial_centroids : randomized initial centroids
+        Returns
+        -------        
+        NA
+        """
         plt.scatter(self.X.iloc[:,0], self.X.iloc[:,1], c='#000000', s=7, label='Data Points')
         plt.scatter(initial_centroids[:, 0], initial_centroids[:, 1], marker='*', s=120, c='r', label='Initial Centroids')
         plt.title('Initial Random Cluster Centers')
@@ -28,7 +48,17 @@ class KMeans:
         plt.draw()
 
     def clustering(self, centroids):
+        """
+        clustering the given data set 
 
+        Parameters
+        ----------
+        centroids 
+
+        Returns
+        -------        
+        NA
+        """
         old_centroids = np.zeros(centroids.shape)
         stopping_criteria = 0.0001
         self.iterating_count = 0
@@ -59,10 +89,20 @@ class KMeans:
 
         self.plot_objective_function_values()
         self.plot_centroids(centroids, clusters)
-        #plt.savefig('plots\Q2\A.png', dpi=300)
-
 
     def plot_centroids(self, centroids, clusters):
+        """
+        plot the centroids
+
+        Parameters
+        ----------
+        centroids 
+        clusters
+        
+        Returns
+        -------        
+        NA
+        """
         colors = ["#4C72B0", "#DD8452", "#55A868", "#C44E52", "#8172B3",
           "#937860", "#DA8BC3", "#8C8C8C", "#CCB974", "#64B5CD"]
         fig, ax = plt.subplots()
@@ -71,14 +111,22 @@ class KMeans:
             ax.scatter(points[:, 0], points[:, 1], s=7, c=colors[i], label='Cluster {}'.format(i + 1))
         ax.scatter(centroids[:, 0], centroids[:, 1], marker='*', s=120, c='#000000', label='Centroids')
 
-        plt.title('k-Means Clustering\n( Iteration count = {} Objective Function value = {:.2f} )'
-                  .format((self.iterating_count), np.array(self.objective_func_values)[self.iterating_count-1, 1]))
+        plt.title('k-Means Clustering\n( Iteration count = {})'.format((self.iterating_count)))
         plt.xlabel('Feature 1')
         plt.ylabel('Feature 2')
         plt.legend()
         plt.draw()
 
     def euclidean_distance(self, a, b):
+        """
+        Calculate the euclidean distance of a and b
+
+        Parameters
+        ----------
+        a and b -> two points
+        -------        
+         return the euclidean distance of a and b
+        """
         return np.sqrt(np.sum((np.array(a) - np.array(b))**2))
 
     def objective_func_calculate(self, clusters, centroids):
@@ -93,8 +141,9 @@ class KMeans:
         return sum(distances_from_centroids)
 
     def plot_objective_function_values(self):
-        """This function plot graph of objective function value for each iteration """
-
+        """
+            This function plot graph of objective function value for each iteration
+        """
         plt.figure()
         plt.plot((np.array(self.objective_func_values)[:, 0] + 1),  np.array(self.objective_func_values)[:, 1], 'bo')
         plt.plot((np.array(self.objective_func_values)[:, 0] + 1), np.array(self.objective_func_values)[:, 1], 'k')
@@ -104,8 +153,9 @@ class KMeans:
         plt.draw()
 
     def save_figures(self, path,k,question_number):
-        """Save all figures plotted with matplotlib to path directory"""
-
+        """
+            Save all figures plotted with matplotlib to path directory
+        """
         # create folder for png files
         if not os.path.isdir(path):
             os.makedirs(path)

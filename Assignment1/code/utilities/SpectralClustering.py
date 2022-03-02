@@ -1,6 +1,4 @@
 
-
-import imp
 from ipaddress import ip_address
 from sklearn.neighbors import kneighbors_graph
 from scipy import sparse
@@ -9,7 +7,7 @@ from numpy import linalg
 import pandas as pd
 
 from sklearn.cluster import KMeans
-
+## TODO : Need to implement the code 
 def generate_graph_laplacian(df, nn):
     """Generate graph Laplacian from data."""
     # Adjacency Matrix.
@@ -56,3 +54,11 @@ def run_k_means(df, n_clusters):
     k_means.fit(df)
     cluster = k_means.predict(df)
     return cluster
+
+from itertools import chain
+def data_frame_from_coordinates(coordinates): 
+    """From coordinates to data frame."""
+    xs = chain(*[c[0] for c in coordinates])
+    ys = chain(*[c[1] for c in coordinates])
+
+    return pd.DataFrame(data={'x': xs, 'y': ys})

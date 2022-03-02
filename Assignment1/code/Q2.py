@@ -3,11 +3,8 @@ import pandas as pd
 import copy
 
 from utilities.KMeans import KMeans
-import utilities.Centroid_initialization as ce
+import utilities.Common as common
 import utilities.SpectralClustering as sc
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 
 if __name__ == '__main__':
 
@@ -20,41 +17,43 @@ if __name__ == '__main__':
     # load datasets from files
     dataset = pd.read_csv(dataset_file, sep=',', header=None)
 
-    # # k = 4 and 5-different random initilization centroids
-    # number_of_cluster = 4
-    # kmeans1 = KMeans(n_cluster=number_of_cluster)
+    # k = 4 and 5-different random initilization centroids
+    number_of_cluster = 4
+    kmeans1 = KMeans(n_cluster=number_of_cluster)
 
-    # for i in range(1, 6):
-    #     # Get the random centroid points everytime
-    #     initial_centroids = ce.random(dataset, number_of_cluster)
-    #     clone = copy.deepcopy(dataset)
+    for i in range(1, 6):
+        # Get the random centroid points everytime
+        initial_centroids = common.random(dataset, number_of_cluster)
+        clone = copy.deepcopy(dataset)
 
-    #     kmeans1.fit(dataset,initial_centroids)
-    #     kmeans1.save_figures('plots/Q2', number_of_cluster, 'Q2a{}'.format(i))
+        kmeans1.fit(dataset,initial_centroids)
+        kmeans1.save_figures('plots/Q2', number_of_cluster, 'Q2a{}'.format(i))
 
 # ############################ Questsion 2 -> (i) Part #######################################
 
-    # print("---------------------------- Q2 - part (ii) Output------------------------")
+    print("---------------------------- Q2 - part (ii) Output------------------------")
     
-    # #fixed initialization and K = {2,3,4,5}
+    #fixed initialization and K = {2,3,4,5}
 
-    # #initialization centroid for cluster
-    # initial_centroids = ce.random(dataset, 2)
+    #initialization centroid for cluster
+    initial_centroids = ce.random(dataset, 2)
 
-    # for i in range(2, 6):
+    for i in range(2, 6):
 
-    #     kmeans1 = KMeans(n_cluster=i)
-    #     clone = copy.deepcopy(dataset)
-    #     initial_centroids = ce.add(clone, i)
+        kmeans1 = KMeans(n_cluster=i)
+        clone = copy.deepcopy(dataset)
+        initial_centroids = common.add(clone, i)
 
-    #     kmeans1.fit(dataset,initial_centroids)
-    #     kmeans1.save_figures('plots/Q2', 4, 'Q2b{}'.format(i))
+        kmeans1.fit(dataset,initial_centroids)
+        kmeans1.save_figures('plots/Q2', 4, 'Q2b{}'.format(i))
 
-    print("---------------------------- Processing completed ------------------------")
+    # print("---------------------------- Processing completed ------------------------")
 
-    data_df = dataset
-    data_df['cluster'] = sc.spectral_clustering(df=data_df, n_neighbors=8, n_clusters=3)
 
-    fig, ax = plt.subplots()
-    sns.scatterplot( data=data_df, hue='cluster', ax=ax)
-    ax.set(title='Spectral Clustering')
+    # data_df =dataset
+    # data_df['cluster'] = sc.spectral_clustering(df=data_df, n_neighbors=8, n_clusters=3)
+
+    # fig, ax = plt.subplots()
+    # sns.scatterplot(x='x', y='y', data=data_df, hue='cluster', ax=ax)
+    # ax.set(title='Spectral Clustering')
+   
