@@ -73,7 +73,7 @@ if __name__ == '__main__':
         plt.savefig("plots\Q1\\"+str(i)+".png", dpi=500)
 
     for i in range(1, 11):
-        kernal_eigen_values, kernal_projected_data = pca.kernalPCA(centered_data, pca.gauusian_function, i/10, no_ocmponents=2)
+        kernal_eigen_values, kernal_projected_data = pca.kernalPCA(centered_data, pca.rbf_function, i/10, no_ocmponents=2)
 
         common.plot_data(centered_data, kernal_projected_data, kernal_eigen_values, 'yo')
         keranl_projected_variance = kernal_projected_data.var(axis=0)

@@ -67,7 +67,7 @@ def polynominal_function(x, y, v):
     return (1 + x @ y.T)**v
 
 
-def gauusian_function(x, y, p):
+def rbf_function(x, y, p):
     """
         Implementation for this e^(-(x-y)(x-y)^T / 2*(sigam)^2) for d = {2,3} function
     """
