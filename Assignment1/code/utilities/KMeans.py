@@ -20,7 +20,7 @@ class KMeans:
         -------        
         NA
         """
-       ## self.X = dataset.iloc[:, [0, 1]]  # not use feature labels
+        self.X = dataset.iloc[:, [0, 1]]  # not use feature labels
         self.m = self.X.shape[0]  # number of training examples
         self.n = self.X.shape[1]  # number of features.    
         initial_centroids = initial_centroids
