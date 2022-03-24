@@ -64,15 +64,7 @@ def spectral_clustering(affinity, k):
     labels = kmeans((X.T / rows_norm), k)
     return labels
 
-def compute_affinity(X):
-    def squared_exponential(x, y, sig=0.8, sig2=1):
-        """ Models smooth functions
-        
-        Function from previous spectral clustering project from tut """
-        norm = numpy.linalg.norm(x - y)
-        dist = norm * norm
-        return numpy.exp(- dist / (2 * sig * sig2))
-    
+def compute_affinity(X):   
     N = X.shape[0]
     res = np.zeros((N, N))
     sig = []
@@ -85,7 +77,7 @@ def compute_affinity(X):
 
     for i in range(N):
         for j in range(N):
-            res[i][j] = squared_exponential(X[i], X[j], sig[i], sig[j])
+            res[i][j] = rbf_function(X[i], X[j], sig[i], sig[j])
     return res
 
 def plot_clusters(X, clusters, k,path, title="Title here"):
@@ -99,3 +91,11 @@ def plot_clusters(X, clusters, k,path, title="Title here"):
     plt.xlabel("Feature1")
     plt.ylabel("Feature2")
     plt.savefig(os.path.join(path, "Q2c_1.png"))
+
+def rbf_function(x, y, sig=0.8, sig2=1):
+        """ Models smooth functions
+        
+        Function from previous spectral clustering project from tut """
+        norm = numpy.linalg.norm(x - y)
+        dist = norm * norm
+        return numpy.exp(- dist / (2 * sig * sig2))
