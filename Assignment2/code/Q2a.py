@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-
 def read_data(file_path):
     data = pd.read_csv(file_path, header=None)
     X = data.iloc[:, :-1]  # All features exepct the last item - X values

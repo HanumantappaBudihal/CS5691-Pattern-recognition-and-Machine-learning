@@ -15,7 +15,7 @@ def linear_regression(X,Y):
   W = np.linalg.inv(X.T @ X) @ X.T @ Y
   return W
 
-def gradient_descent(iterations,learning_rate,X,Y):
+def gradient_descent(iter,learning_rate,X,Y):
   W= np.matrix(np.ones((100,1)))
   
   A = X.T @ X
@@ -23,7 +23,7 @@ def gradient_descent(iterations,learning_rate,X,Y):
   W_ml = np.matrix(linear_regression(X,Y))
   
   error = []
-  for i in range(iterations):
+  for i in range(iter):
     W = W - learning_rate * (A @ W - B)
     error.append( np.power(np.sum(np.power((np.subtract(W , W_ml)),2)),1/2) )
 
