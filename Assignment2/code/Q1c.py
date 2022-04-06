@@ -43,7 +43,17 @@ def k_means(data):
 
 c,ass,mean=k_means(data)
 plt.hist(ass,orientation="horizontal")
-plt.xlabel("x-axis/x")
-plt.ylabel("y-axis/class asssigned")
-plt.savefig("kmeans.png",dpi=300)
-print(ass)
+plt.xlabel("x")
+plt.ylabel("class asssigned")
+plt.savefig("../plots/Q1c_1.png",dpi=300)
+
+plt.close()
+plt.cla()
+plt.clf()
+
+plt.plot(c)
+plt.xlabel("no of iterations")
+plt.ylabel("objective")
+plt.savefig("../plots/Q1c_2.png",dpi=300)
+
+
