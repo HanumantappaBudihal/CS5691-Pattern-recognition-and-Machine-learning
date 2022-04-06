@@ -4,6 +4,9 @@ import seaborn as sns; sns.set();
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.ticker import (MultipleLocator,
+                               FormatStrFormatter,
+                               AutoMinorLocator)
 
 def read_data(file_path):
     data = pd.read_csv(file_path, header=None)
@@ -30,11 +33,11 @@ W_ml= linear_regression(X_train,Y_train)
 def ridge_regression(iterations, l_reg, n=0.000001):
     W = np.matrix(np.ones((100, 1)))
 
-    px_train = X_train[:7000][:]
-    py_train = Y_train[:7000]
+    px_train = X_train[:9700][:]
+    py_train = Y_train[:9700]
 
-    px_test = X_train[3000:][:]
-    py_test = Y_train[3000:]
+    px_test = X_train[9700:][:]
+    py_test = Y_train[9700:]
 
     C = px_train.T @ px_train
     D = px_train.T @ py_train
@@ -47,24 +50,25 @@ def ridge_regression(iterations, l_reg, n=0.000001):
     return W, errorr
 
 
-lambda_reg=[1 * i/10 for i in range(42,47)]
+lambda_reg=[1 * i/10 for i in range(20,29)]
 error_l = []
 W_temp = []
 
 for i in lambda_reg:
-    t, e = ridge_regression(6000, i)
+    t, e = ridge_regression(5000, i)
     error_l.append(e)
     W_temp.append(t)
 
 print(lambda_reg,error_l)
 plt.plot(lambda_reg,error_l)
 plt.xlabel("lambda")
-plt.ylabel("MSEt")
-plt.savefig("../plots/Q2d.png", dpi=300)
+plt.ylabel("MSE")
+
+plt.savefig("../plots/Q2d.png")
 
 test_error_ml = np.sum(np.power((np.subtract(Y_test, X_test @ W_ml)), 2))/len(Y_test)
-W_t_reg = W_temp[lambda_reg.index(4.2)]
+W_t_reg = W_temp[lambda_reg.index(2.0)]
 test_error_reg = np.sum(np.power((np.subtract(Y_test, X_test @ W_t_reg)), 2))/len(Y_test)
 
 print(test_error_ml, test_error_reg)
-print("percentage difference in error", (test_error_ml-test_error_reg)*100)
+print("per difference in error", (test_error_ml-test_error_reg)*100)

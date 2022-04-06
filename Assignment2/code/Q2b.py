@@ -6,21 +6,21 @@ import matplotlib.pyplot as plt
 
 def read_data(file_path):
     data = pd.read_csv(file_path, header=None)
-    data_X = data.iloc[:, :-1]  # All features exepct the last item - X values
-    data_Y = data.iloc[:, -1]  # Last feature ( that is y value) - Y values
+    X = data.iloc[:, :-1]  # All features exepct the last item - X values
+    Y = data.iloc[:, -1]  # Last feature ( that is y value) - Y values
 
-    return data_X, data_Y
+    return X, Y
 
-def linear_regression(X_train,Y_train):
-  W = np.linalg.inv(X_train.T @ X_train) @ X_train.T @ Y_train
+def linear_regression(X,Y):
+  W = np.linalg.inv(X.T @ X) @ X.T @ Y
   return W
 
-def gradient_descent(iterations,learning_rate,X_train,Y_train):
+def gradient_descent(iterations,learning_rate,X,Y):
   W= np.matrix(np.ones((100,1)))
   
-  A = X_train.T @ X_train
-  B = X_train.T @ Y_train
-  W_ml = np.matrix(linear_regression(X_train,Y_train))
+  A = X.T @ X
+  B = X.T @ Y
+  W_ml = np.matrix(linear_regression(X,Y))
   
   error = []
   for i in range(iterations):
@@ -29,11 +29,11 @@ def gradient_descent(iterations,learning_rate,X_train,Y_train):
 
   return W,error
 
-X_train,Y_train=read_data('../dataset/A2Q2Data_train.csv')
-X_train = np.matrix(X_train)
-Y_train = np.matrix(Y_train).T
+X,Y=read_data('../dataset/A2Q2Data_train.csv')
+X = np.matrix(X)
+Y = np.matrix(Y).T
 
-W_gd , error = gradient_descent(5000,0.000007,X_train,Y_train)
+W_gd , error = gradient_descent(5000,0.000007,X,Y)
 
 plt.plot(error)
 plt.xlabel("no of iterations (t)")
