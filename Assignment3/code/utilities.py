@@ -62,16 +62,19 @@ def remove_stopwords(test_point):
 
 
 def remove_mail_id(email):
+    """
+    TODO : Need to add the explination
+    """
     modified_email = []
     for m in email:
         if (('@' not in m) or ('.' not in m)):
             modified_email.append(m)
     return modified_email
 
-# Removes formatting
-
-
 def remove_formatting(test_point):
+    """
+    Removes formatting
+    """
     format_words = ['\\', '{', '}', '.', ',', ';', ':']
     modified_test_point = []
     for word in test_point:
@@ -79,10 +82,11 @@ def remove_formatting(test_point):
             modified_test_point.append(word)
     return modified_test_point
 
-# Removes numbers and punctutations
-
 
 def remove_numbers_punctuations(test_point):
+    """
+    # Removes numbers and punctutations
+    """
     punctuations = list(string.punctuation)
     modified_test_point = []
     for word in test_point:

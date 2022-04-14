@@ -1,12 +1,11 @@
-
 import utilities as utl
 
-
 def train_model(dataset):
-    rows, _ = dataset.shape  #rows and cols
-    number_ham_mails = 0                # Numbers of Ham mails
-    number_spam_mails = 0               # Numbers of Spam mails
-    # Dictionary for storing elements in form "word: [No of ham mails in which word occur , No of spam mails in which word occur]"
+    """
+    """
+    rows, _ = dataset.shape  #Rows and cols
+    number_ham_mails = 0     #Numbers of Ham mails
+    number_spam_mails = 0    #Numbers of Spam mails
     dictionary = {}
 
     for i in range(rows):
@@ -52,19 +51,19 @@ def train_model(dataset):
 
     return probability_table
 
-# Preprocess raw mail content
-
 
 def pre_process(content):
+    """
+    # Preprocess raw mail content
+    """
     return list(set(utl.lemmatize(utl.remove_stopwords(utl.remove_numbers_punctuations(utl.remove_formatting(utl.remove_mail_id(utl.get_tokens(content))))))))
-
-# Run model to determine label of processed content
 
 
 def get_label(probability_table, content):
-
+    """
+    # Run model to determine label of processed content
+    """
     probability_ham = probability_spam = 0.5
-
     probability_words_ham = probability_words_spam = 1e175
 
     for word in content:
