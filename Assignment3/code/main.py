@@ -73,7 +73,7 @@ def print_output_file(spam_results, output_file_path):
 def main():
 
     training_file_path = "../dataset/training_dataset.csv"
-    output_file_path = "../output.csv"
+    output_file_path = "../output/output.csv"
     test_email_folder = "../test"
 
     # 1.Data Pre-processing
@@ -88,7 +88,7 @@ def main():
     model = tr.train_model(dataset)
     print("Model training is completed.")
 
-    # 3.Model Evaluation
+    # 3.Model Evaluation : This is for the given requirment ( read the email files)
     print("Model Evaluation is started. . ...")
     test_mails = get_test_mails(test_email_folder)
     output_lines = []
@@ -97,7 +97,7 @@ def main():
         content = mail[1]
 
         # preprocessing the content
-        pre_processed_content = tr.pre_process(content)
+        pre_processed_content = tr.pre_processing(content)
         label = tr.get_label(model, pre_processed_content)
         output_lines.append(name + ',' + str(label))
 

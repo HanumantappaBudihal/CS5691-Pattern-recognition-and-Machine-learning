@@ -1,11 +1,65 @@
-import utilities as utl
+from nltk.tokenize import RegexpTokenizer
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+import string
+
+def pre_processing(content):
+    """
+    pre processing : get the tokens, remove the mail id, remove the formatter, remove the numbers and punctions , remove stopwords
+    and lemmatization
+    
+    """
+    #Step 1 :Get the tokens     
+    tokens= RegexpTokenizer('\w+|\$[\d\.]+|\S+').tokenize(content)
+
+    #Step 2 : remove mail id
+    modified_tokens = []
+    for m in tokens:
+        if (('@' not in m) or ('.' not in m)):
+            modified_tokens.append(m)
+    
+    #Step 3 : remove_formatting 
+    format_words = ['\\', '{', '}', '.', ',', ';', ':']
+    modified_test_point = []
+    for word in modified_tokens:
+        if word[0] not in format_words:
+            modified_test_point.append(word)
+
+    #Step 4 : remove numbers and punctuations
+    punctuations = list(string.punctuation)
+    modified_test_point2 = []
+    for word in modified_test_point:
+        modified_test_point2.append(
+            ''.join([i for i in word if not i.isdigit() and i not in punctuations]))
+    
+    #Step5 : remove stopwords
+    neutral_words = ['could', 'might', 'would', 'may', 'shall','www', 'http', 'email', 'sent', 'send', 'subject']
+    special_characters = ['+', '-', '_', '?', '<=', '>=', '>', '<',
+                          '(', ')', '{', '}',  '[', ']', '"', ';', ':', '!', '*', '@', '#', '$', '%', '&', '~', ',', '.', '\ ',  '/']
+
+    updated_stop_words = special_characters + \
+        neutral_words + list(stopwords.words('english'))
+
+    modified_test_point3 = []
+    for word in modified_test_point2:
+        if word not in updated_stop_words and len(word) > 2:
+            modified_test_point3.append(
+                word.translate(string.punctuation).lower())
+
+    #Step 6 : lemmatization
+    for i in range(len(modified_test_point3)):
+        modified_test_point3[i] = WordNetLemmatizer().lemmatize(modified_test_point3[i])
+
+    return modified_test_point3
+
 
 def train_model(dataset):
     """
+    # TODO : Need to add the more explination
     """
-    rows, _ = dataset.shape  #Rows and cols
-    number_ham_mails = 0     #Numbers of Ham mails
-    number_spam_mails = 0    #Numbers of Spam mails
+    rows, _ = dataset.shape  # Rows and cols
+    number_ham_mails = 0  # Numbers of Ham mails
+    number_spam_mails = 0  # Numbers of Spam mails
     dictionary = {}
 
     for i in range(rows):
@@ -15,17 +69,14 @@ def train_model(dataset):
             number_ham_mails += 1
 
         email = dataset.loc[i][0]
-        content = list(set(utl.lemmatize(utl.remove_stopwords(utl.remove_numbers_punctuations(
-            utl.remove_formatting(utl.remove_mail_id(utl.get_tokens(email))))))))
+        content = list(pre_processing(email))
 
         for word in content:
             if word not in dictionary:
-
                 if dataset.loc[i][1] == 0:
                     dictionary[word] = [1, 0]
                 else:
                     dictionary[word] = [0, 1]
-
             else:
                 if dataset.loc[i][1] == 0:
                     dictionary[word][0] += 1
@@ -49,14 +100,7 @@ def train_model(dataset):
         probability_table[word] = [filtered_dictionary[word][0] /
                                    (number_ham_mails + 1), filtered_dictionary[word][1] / (number_spam_mails + 1)]
 
-    return probability_table
-
-
-def pre_process(content):
-    """
-    # Preprocess raw mail content
-    """
-    return list(set(utl.lemmatize(utl.remove_stopwords(utl.remove_numbers_punctuations(utl.remove_formatting(utl.remove_mail_id(utl.get_tokens(content))))))))
+    return probability_table              
 
 
 def get_label(probability_table, content):
@@ -73,9 +117,10 @@ def get_label(probability_table, content):
 
     probability_ham_words = probability_ham * probability_words_ham
     probability_spam_words = probability_spam * probability_words_spam
-
+    
     label = 1
     if probability_ham_words >= probability_spam_words:
         label = 0
 
     return label
+
