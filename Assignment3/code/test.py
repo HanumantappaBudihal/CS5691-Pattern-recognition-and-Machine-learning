@@ -1,11 +1,11 @@
-
-from asyncio.windows_events import NULL
-from lib2to3.pytree import Node
 import nltk
 import numpy as np
-from pyparsing import nullDebugAction
 import train as tr
 import pandas as pd
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+from sklearn.metrics import plot_confusion_matrix
+
 
 
 def load_nltk_package():
@@ -52,12 +52,25 @@ def print_output_file(spam_results, output_file_path):
     print("Output generated successfully . . .!")
     file_pointer.close()
 
+def plot_confusion_matrix(true_labels,pred_labels):
+    conf_matrix = confusion_matrix(y_true=true_labels, y_pred=pred_labels)
+    _, ax = plt.subplots(figsize=(7.5, 7.5))
+    
+    ax.matshow(conf_matrix, cmap=plt.cm.Blues, alpha=0.3)
+    for i in range(conf_matrix.shape[0]):
+        for j in range(conf_matrix.shape[1]):
+            ax.text(x=j, y=i,s=conf_matrix[i, j], va='center', ha='center', size='xx-large')
+    
+    plt.xlabel('Predictions', fontsize=18)
+    plt.ylabel('Actuals', fontsize=18)
+    plt.title('Confusion Matrix', fontsize=18)
+    plt.show()
 
 def main():
 
     training_file_path = "../dataset/training_dataset.csv"
-    output_file_path = "../output/testdata2_output.csv"
-    test_emails = "../dataset/testdata2.csv"
+    output_file_path = "../output/testdata1_output.csv"
+    test_emails = "../dataset/testdata1.csv"
 
     # 1.Data Pre-processing
 
@@ -79,6 +92,7 @@ def main():
     mail_counter = 0
     pred_labels = []
     true_labels=[]
+
     for mail in test_mails.values:
         mail_counter += 1
         content = mail[0]
@@ -102,6 +116,7 @@ def main():
     accuracy = overall_correct.sum() / overall_correct.size
 
     print('Accuracy :'+str(accuracy))
+    plot_confusion_matrix(true_labels,pred_labels)    
 
 if __name__ == "__main__":
     main()

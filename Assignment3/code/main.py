@@ -1,7 +1,5 @@
-
 import os
 import nltk
-from sklearn import datasets
 import train as tr
 import pandas as pd
 

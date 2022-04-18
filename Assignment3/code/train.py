@@ -54,12 +54,9 @@ def pre_processing(content):
 
 
 def train_model(dataset):
-    """
-    # TODO : Need to add the more explination
-    """
-    rows, _ = dataset.shape  # Rows and cols
-    number_ham_mails = 0  # Numbers of Ham mails
-    number_spam_mails = 0  # Numbers of Spam mails
+    rows, _ = dataset.shape 
+    number_ham_mails = 0  
+    number_spam_mails = 0  
     dictionary = {}
 
     for i in range(rows):
