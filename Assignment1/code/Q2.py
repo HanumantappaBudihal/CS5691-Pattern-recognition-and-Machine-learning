@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 from utilities.KMeans import KMeans
-import utilities.Common as common
+import utilities.common as common
 import utilities.SpectralClustering as sc
 import copy
 

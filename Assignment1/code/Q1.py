@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import utilities.Common as common
+import utilities.common as common
 import utilities.PCA as pca
 
 if __name__ == '__main__':
@@ -11,16 +11,14 @@ if __name__ == '__main__':
     # Load the data from given dataset
     original_data = common.load_data("dataset/Dataset.csv")
     centered_data = common.center_data(original_data)  # For centered data
-    centered_data_variance = centered_data.var(
-        axis=0)          # variance along x and y
+    centered_data_variance = centered_data.var(axis=0)          # variance along x and y
 
     # Apply  PCA
     eigen_values, eigen_vectors = pca.fit(centered_data)
 
     # project data point in eigen space
     centered_projected_data = original_data @ eigen_vectors
-    centered_projected_variance = centered_projected_data.var(
-        axis=0)  # variance in data in eigen space
+    centered_projected_variance = centered_projected_data.var(axis=0)  # variance in data in eigen space
 
     # Total of variance along eigen basis will remain same as total of variance along original basis
     print("The variance along x and y axis in original centered data : ",
