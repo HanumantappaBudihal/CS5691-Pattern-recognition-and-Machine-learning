@@ -1,7 +1,7 @@
 import nltk
 import numpy as np
-import train as tr
 import pandas as pd
+import train as tr
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 from sklearn.metrics import plot_confusion_matrix
@@ -69,8 +69,8 @@ def plot_confusion_matrix(true_labels,pred_labels):
 def main():
 
     training_file_path = "../dataset/training_dataset.csv"
-    output_file_path = "../output/testdata1_output.csv"
-    test_emails = "../dataset/testdata1.csv"
+    output_file_path = "../output/testdata2_output.csv"
+    test_emails = "../dataset/testdata2.csv"
 
     # 1.Data Pre-processing
 

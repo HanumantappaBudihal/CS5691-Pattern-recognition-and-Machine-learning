@@ -40,6 +40,7 @@ def pre_processing(content):
     updated_stop_words = special_characters + \
         neutral_words + list(stopwords.words('english'))
 
+    #remove the duplicate word
     modified_test_point3 = []
     for word in modified_test_point2:
         if word not in updated_stop_words and len(word) > 2:
@@ -68,6 +69,7 @@ def train_model(dataset):
         email = dataset.loc[i][0]
         content = list(pre_processing(email))
 
+        #counting the number of time word occur in spam and non-spam mail
         for word in content:
             if word not in dictionary:
                 if dataset.loc[i][1] == 0:
