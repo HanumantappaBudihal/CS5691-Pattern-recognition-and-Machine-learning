@@ -89,7 +89,6 @@ def train_model(dataset):
 
     filtered_dictionary = {}
     for word in dictionary:
-        if (dictionary[word][0] / dictionary[word][1]) > 1.7 or (dictionary[word][1] / dictionary[word][0]) > 1.7:
             filtered_dictionary[word] = [
                 dictionary[word][0], dictionary[word][1]]
 
