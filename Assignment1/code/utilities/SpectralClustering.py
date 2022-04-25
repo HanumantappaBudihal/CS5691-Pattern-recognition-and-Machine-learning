@@ -94,7 +94,6 @@ def plot_clusters(X, clusters, k,path, title="Title here"):
 
 def rbf_function(x, y, sig=0.8, sig2=1):
         """ Models smooth functions
-        
         Function from previous spectral clustering project from tut """
         norm = numpy.linalg.norm(x - y)
         dist = norm * norm
